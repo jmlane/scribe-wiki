@@ -1,0 +1,24 @@
+{
+  "name": "scribe-wiki",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server --open",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmlane/scribe-wiki.git"
+  },
+  "author": "Jonathan M. Lane <jmlane@gmail.com>",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/jmlane/scribe-wiki/issues"
+  },
+  "homepage": "https://github.com/jmlane/scribe-wiki#readme",
+  "devDependencies": {
+    "elm-webpack-loader": "^4.4.0",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.9.7"
+  }
+}

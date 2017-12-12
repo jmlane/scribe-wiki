@@ -1,4 +1,4 @@
-module Name exposing (Model, Msg, update, view, subscriptions, init)
+module Main exposing (Model, Msg, update, view, subscriptions, init)
 
 import Json.Decode
 import Html exposing (..)
