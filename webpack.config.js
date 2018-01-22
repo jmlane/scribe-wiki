@@ -1,4 +1,5 @@
 const path = require('path');
+const apiMocker = require('connect-api-mocker');
 
 module.exports = {
   entry: './src/index.js',
@@ -32,6 +33,9 @@ module.exports = {
     ]
   },
   devServer: {
+    before: function(app) {
+      app.use(apiMocker('/api', 'mocks/api'))
+    },
     contentBase: path.join(__dirname, "src"),
     historyApiFallback: true
   }

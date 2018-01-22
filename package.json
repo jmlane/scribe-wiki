@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/jmlane/scribe-wiki#readme",
   "devDependencies": {
+    "connect-api-mocker": "^1.3.5",
     "elm-webpack-loader": "^4.4.0",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.9.7"
