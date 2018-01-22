@@ -4,11 +4,13 @@ import Json.Decode
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
+import Http
+import Navigation
 
 
 main : Program Never Model Msg
 main =
-    Html.program
+    Navigation.program UrlChange
         { init = init
         , view = view
         , update = update
@@ -21,9 +23,21 @@ subscriptions model =
     Sub.none
 
 
-init : ( Model, Cmd Msg )
-init =
-    ( Model False "" (Page "First Page" ""), Cmd.none )
+init : Navigation.Location -> ( Model, Cmd Msg )
+init location =
+    let
+        apiUrl = "/api/pages" ++ location.pathname
+
+        decodePage : Json.Decode.Decoder Page
+        decodePage =
+            Json.Decode.map2 Page
+                (Json.Decode.field "title" Json.Decode.string)
+                (Json.Decode.field "content" Json.Decode.string)
+
+        getPage =
+            Http.send PageRequest (Http.get apiUrl decodePage)
+    in
+        ( Model False "" (Page "First Page" ""), getPage )
 
 
 type alias Model =
@@ -42,7 +56,9 @@ type alias Page =
 type Msg
     = Edit
     | ContentChanged String
+    | PageRequest (Result Http.Error Page)
     | Save
+    | UrlChange Navigation.Location
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -54,12 +70,21 @@ update msg model =
         ContentChanged newContent ->
             { model | currentContent = newContent } ! [ Cmd.none ]
 
+        PageRequest (Err _) ->
+            model ! [ Cmd.none ]
+
+        PageRequest (Ok page) ->
+            { model | currentPage = page } ! [Cmd.none ]
+
         Save ->
             let
                 currentPage = model.currentPage
                 newPage = { currentPage | content = model.currentContent }
             in
                 { model | editing = False, currentPage = newPage } ! [ Cmd.none ]
+        
+        UrlChange location ->
+            model ! [ Cmd.none ]
 
 
 view : Model -> Html Msg
